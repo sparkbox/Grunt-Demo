@@ -69,10 +69,21 @@ module.exports = (grunt) ->
         specs: "specs/js/*Spec.js"
         vendor: [ "specs/lib/jquery.min.js", "specs/lib/jasmine-fixture.js" ]
 
+    asciify:
+      banner:
+        text: "<%= pkg.name %>"
+
+        options:
+          font: 'larry3d'
+          log: true
+
     uglify:
       my_target:
+        options:
+          banner: '/*!\n <%= asciify_banner %>*/\n'
+          # banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */'
         files:
-          "dest/<%= pkg.name %>.min.js": "js/<%= pkg.name %>.js"
+          "dist/js/<%= pkg.name %>.min.js": "dist/js/<%= pkg.name %>.js"
 
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-watch"
@@ -80,12 +91,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-contrib-jasmine"
   grunt.loadNpmTasks "grunt-contrib-uglify"
+  grunt.loadNpmTasks "grunt-asciify"
   grunt.loadNpmTasks "grunt-notify"
 
   # Clean, compile and concatenate JS
   grunt.registerTask "javascript:dev", [ "coffee", "jasmine" ]
 
-  grunt.registerTask "javascript:dist", [ "coffee", "jasmine", "uglify" ]
+  grunt.registerTask "javascript:dist", [ "coffee", "jasmine", "asciify", "uglify" ]
 
   # Production task
   grunt.registerTask "dev", [ "javascript:dev", "compass:dev", "concat:partials" ]
