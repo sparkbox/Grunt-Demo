@@ -23,12 +23,10 @@ module.exports = (grunt) ->
         tasks: "compass:dev"
 
       javascript:
-        files: "coffee/*"
+        files: ["coffee/*", "specs/*.coffee"]
         tasks: "javascript:dev"
-
-      testing:
-        files: "specs/*"
-        tasks: "jasmine"
+        options:
+          livereload:true
 
     compass:
       dev:
@@ -49,11 +47,9 @@ module.exports = (grunt) ->
             destBase + destPath.replace(/\.coffee$/, ".js").replace(/specs\//, "")
         })
 
-
     jsTesting:
       files: "dist/js/*.js"
       tasks: "jasmine"
-
 
     concat:
       partials:
@@ -67,7 +63,7 @@ module.exports = (grunt) ->
       src: "dist/js/*.js"
       options:
         specs: "specs/js/*Spec.js"
-        vendor: [ "specs/lib/jquery.min.js", "specs/lib/jasmine-fixture.js" ]
+        vendor: ["specs/lib/jquery.min.js", "specs/lib/jasmine-fixture.js"]
 
     asciify:
       banner:
@@ -81,7 +77,6 @@ module.exports = (grunt) ->
       my_target:
         options:
           banner: '/*!\n <%= asciify_banner %>*/\n'
-          # banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */'
         files:
           "dist/js/<%= pkg.name %>.min.js": "dist/js/<%= pkg.name %>.js"
 
@@ -95,14 +90,14 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-notify"
 
   # Clean, compile and concatenate JS
-  grunt.registerTask "javascript:dev", [ "coffee", "jasmine" ]
+  grunt.registerTask "javascript:dev", ["coffee", "jasmine"]
 
-  grunt.registerTask "javascript:dist", [ "coffee", "jasmine", "asciify", "uglify" ]
+  grunt.registerTask "javascript:dist", ["javascript:dev", "asciify", "uglify"]
 
   # Production task
-  grunt.registerTask "dev", [ "javascript:dev", "compass:dev", "concat:partials" ]
+  grunt.registerTask "dev", ["javascript:dev", "compass:dev", "concat:partials"]
 
-  grunt.registerTask "dist", ["javascript:dist", "compass:dist", "concat:partials" ]
+  grunt.registerTask "dist", ["javascript:dist", "compass:dist", "concat:partials"]
 
   # Default task
   grunt.registerTask "default", "dev"
