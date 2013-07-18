@@ -67,8 +67,7 @@ module.exports = (grunt) ->
       src: "dist/js/*.js"
       options:
         specs: "specs/js/*Spec.js"
-        helpers: "specs/js/*Helper.js"
-        vendor: ["public/js/jquery-1.9.1.min.js", "specs/lib/*.js"]
+        vendor: [ "specs/lib/jquery.min.js", "specs/lib/jasmine-fixture.js" ]
 
     uglify:
       my_target:

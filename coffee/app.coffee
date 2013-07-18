@@ -1,7 +1,4 @@
 window.demo =
-  title: document.querySelectorAll("h1")[0]
-  count: 0
-
   step: ->
     demo.title.classList.remove "step#{demo.count}"
 
@@ -14,4 +11,9 @@ window.demo =
 
     demo.count
 
-setInterval(demo.step, 150)
+  init: ->
+    @title = document.querySelectorAll("h1")[0]
+    @count = 0
+    setInterval(demo.step, 150)
+
+demo.init()
